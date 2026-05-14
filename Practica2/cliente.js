@@ -1,7 +1,6 @@
 
-import { mostrarProductos } from './crud.js'; 
-import { agregarPedido} from './caja.js';
-import { mostrarTotal} from './caja.js';
+import { mostrarProductos } from './crud.js';
+import { agregarPedido } from './caja.js';
 
 
 
@@ -15,10 +14,10 @@ console.log(`
 
 mostrarProductos();
 
-while (true){
+while (true) {
 
     console.log('¿Deseas agregar un producto?');
-    if (confirm('¿Deseas agregar otro producto?')){
+    if (confirm('¿Deseas agregar otro producto?')) {
         agregarPedido();
     } else {
         console.log('Terminando compra... ');
