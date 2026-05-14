@@ -1,6 +1,6 @@
 import { catalogo } from "./catalogo.js";
 
-export function agregarProducto(producto) {
+export function agregarProducto() {
     catalogo.push(producto);
 }
 
@@ -16,4 +16,3 @@ export function eliminarProducto(id) {
 
 }
 
-console.table(catalogo)

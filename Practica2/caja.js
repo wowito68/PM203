@@ -1,37 +1,20 @@
-import { catalogo, productos } from "./catalogo.js";
-let totalAcumulado = 0;
-const listaPedidos = [];
+import { catalogo } from "./catalogo.js";
 
-function agregarPedido(id) {
-    const producto = catalogo.productos.find((p) => p.id === id);
+let total = 0;
+let pedidos = [];
 
+export function agregarPedido(id, cantidad) {
+    let producto = catalogo.find(p => p.id === id);
     if (producto) {
-        const cantidad = parseInt(prompt(`¿Cuantas unidades de ${producto.nombre} deseas?`), 10);
-
-        if (!isNaN(cantidad) && cantidad > 0) {
-            const subtotal = producto.precio * cantidad;
-            totalAcumulado += subtotal;
-            console.log(`Agregado: ${producto.nombre} x${cantidad} - Subtotal: $${subtotal}`);
-
-            listaPedidos.push({
-                nombre: producto.nombre,
-                cantidad: cantidad,
-                subtotal: subtotal
-            });
-        }
+        let subtotal = producto.precio * cantidad;
+        total += subtotal;
+        pedidos.push({ nombre: producto.nombre, cantidad, subtotal });
+        console.log(`Agregado: ${producto.nombre} x${cantidad} - $${subtotal}`);
     }
 }
 
-
-
-function mostrarPedidos() {
+export function mostrarPedidos() {
     console.log("=== LISTA DE PEDIDOS ===");
-
-    listaPedidos.forEach((pedido, index) => {
-        console.log(
-            `${index + 1}. ${pedido.nombre} x${pedido.cantidad} - $${pedido.subtotal}`
-        );
-    });
-
-    console.log("TOTAL ACUMULADO: $" + totalAcumulado);
+    pedidos.forEach((p, i) => console.log(`${i + 1}. ${p.nombre} x${p.cantidad} - $${p.subtotal}`));
+    console.log("TOTAL: $" + total);
 }
