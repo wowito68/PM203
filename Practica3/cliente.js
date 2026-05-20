@@ -2,18 +2,11 @@ import { catalogo } from './catalogo.js';
 import { agregarPedido, mostrarPedidos, calcularTotales, reiniciarCaja } from './caja.js';
 import { obtenerProductosBaratos, obtenerProductosCaros, obtenerBebidas, obtenerSnacks } from './crud.js';
 import { createInterface } from 'readline';
-
+import { mostrarMenu } from './crud.js';
 const rl = createInterface({ input: process.stdin, output: process.stdout });
 const preguntar = (msg) => new Promise(r => rl.question(msg, r));
 
-export function mostrarMenu() {
-    console.log("\n=== MENÚ COMPLETO ===");
-    catalogo.forEach(producto => {
-        const estado = producto.Disponible ? "Disponible" : "Agotado";
-        console.log(`[${producto.categoria}] ${producto.nombre} - $${producto.precio} (${estado})`);
-    });
-    console.log("=====================\n");
-}
+
 
 export function mostrarPromociones() {
     console.log("\n=== PROMOCIONES DEL DÍA (20% OFF) ===");
@@ -47,11 +40,11 @@ async function menuFiltros() {
     console.log("3. Bebidas");
     console.log("4. Snacks");
     console.log("5. Regresar al menú principal");
-    
+
     let op = await preguntar("Seleccione una opción de filtro: ");
     let filtrados = [];
     let titulo = "";
-    
+
     switch (op) {
         case '1':
             filtrados = obtenerProductosBaratos();
@@ -75,7 +68,7 @@ async function menuFiltros() {
             console.log("Opción no válida.");
             return;
     }
-    
+
     console.log(`\n=== ${titulo} ===`);
     if (filtrados.length === 0) {
         console.log("No se encontraron productos.");
@@ -94,34 +87,32 @@ async function main() {
             Bienvenidos a CAFEINABLE
         ********************************
     `);
-
+    console.log("=== MENÚ PRINCIPAL ===");
+    mostrarMenu();
+    console.log("Otras Opciones:")
     let salir = false;
     while (!salir) {
-        console.log("=== MENÚ PRINCIPAL ===");
-        console.log("1. Ver menú completo");
-        console.log("2. Ver productos disponibles");
-        console.log("3. Ver promociones del día");
-        console.log("4. Filtrar productos");
-        console.log("5. Agregar producto al pedido");
-        console.log("6. Ver pedido y calcular totales");
-        console.log("7. Reiniciar pedido");
-        console.log("8. Salir");
-        
+
+        console.log("1. Ver productos disponibles");
+        console.log("2. Ver promociones del día");
+        console.log("3. Filtrar productos");
+        console.log("4. Agregar producto al pedido");
+        console.log("5. Ver pedido y calcular totales");
+        console.log("6. Reiniciar pedido");
+        console.log("7. Salir");
+
         let opcion = await preguntar("Seleccione una opción: ");
         switch (opcion) {
             case '1':
-                mostrarMenu();
-                break;
-            case '2':
                 mostrarDisponibles();
                 break;
-            case '3':
+            case '2':
                 mostrarPromociones();
                 break;
-            case '4':
+            case '3':
                 await menuFiltros();
                 break;
-            case '5':
+            case '4':
                 let id = parseInt(await preguntar("ID del producto: "));
                 let cant = parseInt(await preguntar("Cantidad: "));
                 if (isNaN(id) || isNaN(cant) || cant <= 0) {
@@ -130,14 +121,14 @@ async function main() {
                     agregarPedido(id, cant);
                 }
                 break;
-            case '6':
+            case '5':
                 mostrarPedidos();
                 calcularTotales();
                 break;
-            case '7':
+            case '6':
                 reiniciarCaja();
                 break;
-            case '8':
+            case '7':
                 salir = true;
                 break;
             default:

@@ -4,7 +4,7 @@ export function agregarProducto() {
     catalogo.push(producto);
 }
 
-export function mostrarProductos() {
+export function mostrarMenu() {
     console.table(catalogo);
 }
 
