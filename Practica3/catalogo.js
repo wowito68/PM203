@@ -1,4 +1,3 @@
-import { fa } from "zod/locales";
 
 export let catalogo = [
     {
