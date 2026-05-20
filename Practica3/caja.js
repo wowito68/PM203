@@ -5,10 +5,14 @@ import { catalogo } from "./catalogo.js";
 let total = 0;
 let pedidos = [];
 
-// Agregar Pedido (tu codigo original)
+// Agregar Pedido (tu codigo original con verificacion de disponibilidad)
 export function agregarPedido(id, cantidad) {
     let producto = catalogo.find(p => p.id === id);
     if (producto) {
+        if (producto.Disponible === false) {
+            console.log(`Error: El producto "${producto.nombre}" no está disponible (Agotado).`);
+            return;
+        }
         let subtotal = producto.precio * cantidad;
         total += subtotal;
         pedidos.push({ nombre: producto.nombre, cantidad, subtotal });
