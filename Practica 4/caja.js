@@ -1,4 +1,3 @@
-// 
 import { catalogo } from "./catalogo.js"
 
 let total = 0
@@ -32,13 +31,11 @@ export function agregarPedido(id, cantidad) {
 
     pedidos.push(pedido)
     console.log("Agregado: " + producto.nombre + " x" + cantidad + " - $" + subtotal)
-
-    
-    setTimeout(() => {
-        notificarPedidoListo(pedido)
-    }, 2500)
 }
 
+export function obtenerPedidos() {
+    return pedidos;
+}
 
 function notificarPedidoListo(pedido) {
     console.log("\nNOTIFICACION: El pedido #" + pedido.id + " (" + pedido.nombre + ") ESTA LISTO")
