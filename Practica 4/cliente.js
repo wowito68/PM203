@@ -1,10 +1,13 @@
 import { catalogo } from './catalogo.js';
 import { agregarPedido, mostrarPedidos, calcularTotales, reiniciarCaja } from './caja.js';
-import { obtenerProductosBaratos, obtenerProductosCaros, obtenerBebidas, obtenerSnacks } from './cocina.js';
+import { obtenerProductosBaratos, obtenerProductosCaros, obtenerBebidas, obtenerSnacks } from './crud.js';
 import { createInterface } from 'readline';
-import { mostrarMenu } from './cocina.js';
+import { mostrarMenu } from './crud.js';
+import { prepararEnCocina } from './cocina.js';
+
 const rl = createInterface({ input: process.stdin, output: process.stdout });
 const preguntar = (msg) => new Promise(r => rl.question(msg, r));
+
 
 
 export function mostrarPromociones() {
@@ -80,6 +83,28 @@ async function menuFiltros() {
     console.log("=====================\n");
 }
 
+async function estadoPedido() {
+    console.log("\n[Cliente] Pedido recibido. Enviando a cocina...");
+
+    try {
+        setTimeout(() => {
+            console.log("[Sistema] Estado actualizado: Preparando...");
+        }, 1500);
+        
+        setTimeout(() => {
+            console.log("[Sistema] Estado actualizado: Empacando...");
+        }, 3000);
+
+        const resultado = await prepararEnCocina([{ nombre: 'Pedido actual' }]);
+        
+        console.log(`\n[Cliente] Éxito: ${resultado.mensaje}`);
+        console.log("[Cliente] Pedido entregado al cliente.");
+    } catch (error) {
+        console.log(`\n[Error] Ocurrió un problema: ${error.message}`);
+        console.log("[Cliente] Pedido cancelado.");
+    }
+}
+
 async function main() {
     console.log(`
         ********************************
@@ -123,6 +148,7 @@ async function main() {
             case '5':
                 mostrarPedidos();
                 calcularTotales();
+                await estadoPedido();
                 break;
             case '6':
                 reiniciarCaja();
