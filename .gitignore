@@ -1,7 +1,16 @@
+# Node / Expo
 node_modules/
 .expo/
 dist/
 web-build/
+
+# LaTeX auxiliares
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
+
+# Otros
 /Practica1/*.pdf
 /imagenes/
-/reporte/
