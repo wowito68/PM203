@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Perfil } from './components/Perfil';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Perfil nombre="Guillermo Alvarez Sanchez" carrera="Sistemas" materia="Programacion Movil" />
+      <Perfil
+        nombre="Guillermo Alvarez Sanchez"
+        carrera="ING Sistemas"
+        materia="Programacion Movil"
+        cuatrimestre="9no"
+      />
       <StatusBar style="auto" />
     </View>
   );

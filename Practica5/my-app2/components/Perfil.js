@@ -1,8 +1,8 @@
-import { View, Text,Button } from 'react-native'
-import React,{ useState } from 'react'
+import React, { useState } from 'react'
+import { View, Text, Button } from 'react-native'
 
-export const Perfil = (nombre,carrera,materia,cuatrimestre) => {
-    const[mostrar,setMostrar] = useState(false)
+export const Perfil = ({ nombre, carrera, materia, cuatrimestre }) => {
+    const [mostrar, setMostrar] = useState(false)
 
     return (
         <View>
@@ -17,14 +17,16 @@ export const Perfil = (nombre,carrera,materia,cuatrimestre) => {
                 </>
             }
 
-            <Button title="Mostrar perfil" onPress={() => setMostrar(!mostrar)}></Button>
+            <Button
+                title={mostrar ? 'Ocultar perfil' : 'Mostrar perfil'}
+                onPress={() => setMostrar(!mostrar)}
+            />
         </View>
     )
 }
 
-
 /*
-import { View, Text,Button } from 'react-native'
+Ejemplo recibiendo props como objeto:
 
 export const Perfil = (props) => {
     return (
