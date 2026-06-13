@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet } from 'react-native'
 
 export const Perfil = ({ nombre, carrera, materia, cuatrimestre }) => {
     const [mostrar, setMostrar] = useState(false)
 
     return (
-        <View>
-            <Text>Hola {nombre}</Text>
+        <View style={styles.tarjeta}>
+            <Text style={styles.nombre}>Hola {nombre}</Text>
 
             {/* Renderizado condicional */}
             {mostrar &&
                 <> 
-                    <Text>Carrera: {carrera}</Text>
-                    <Text>Materia: {materia}</Text>
-                    <Text>Cuatrimestre: {cuatrimestre}</Text>
+                    <Text style={styles.carrera}>Carrera: {carrera}</Text>
+                    <Text style={styles.otroTexto}>Materia: {materia}</Text>
+                    <Text style={styles.otroTexto}>Cuatrimestre: {cuatrimestre}</Text>
                 </>
             }
 
@@ -25,17 +25,24 @@ export const Perfil = ({ nombre, carrera, materia, cuatrimestre }) => {
     )
 }
 
-/*
-Ejemplo recibiendo props como objeto:
-
-export const Perfil = (props) => {
-    return (
-        <View>
-            <Text>Hola {props.nombre}</Text>
-            <Text>Carrera: {props.carrera}</Text>
-            <Text>Materia: {props.materia}</Text>
-            <Text>Cuatrimestre: {props.cuatrimestre}</Text>
-        </View>
-    )
-}
-*/
+const styles = StyleSheet.create({
+nombre: {
+    fontSize: 24,
+    fontWeight: 600,
+    textTransform: 'uppercase',
+},
+carrera: {
+    fontSize: 18,
+    color: 'blue',
+    fontFamily: 'Roboto',
+},
+otroTexto: {
+    fontSize: 12,
+    fontFamily: 'Courier',
+    fontStyle: 'italic',
+},
+tarjeta: {
+    borderWidth:2,
+    padding:25,
+    margin:15,}
+})
