@@ -73,7 +73,7 @@ export default function TextInputScreen() {
         <TextInput
           style={styles.input}
           placeholder="Ingrese su nombre"
-          placeholderTextColor="#999"
+          placeholderTextColor="black"
           autoCapitalize="words"
           value={nombre}
           onChangeText={(texto) => setNombre(texto)}
@@ -81,7 +81,7 @@ export default function TextInputScreen() {
         <TextInput
           style={styles.input}
           placeholder="Ingrese tu correo electronico"
-          placeholderTextColor="#999"
+          placeholderTextColor="black"
           keyboardType="email-address"
           autoCapitalize="none"
           value={correo}
