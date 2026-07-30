@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Alert, Platform, View, SafeAreaView, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { Alert, Platform, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
 
 const API_BASE_URL = Platform.select({
   web: 'http://localhost:5000',
   default: 'http://10.16.39.34:5000',
 });
 
-export default function App() {
-  const [nombre, setNombre] = useState('');
-  const [edad, setEdad] = useState('');
-  const [cargando, setCargando] = useState(false);
+const AUTH_HEADER = 'Basic YWRtaW46MTIzNA==';
+
+export default function EditarUsuario() {
+  const params = useLocalSearchParams();
+  const [nombre, setNombre] = useState(params.nombre?.toString() ?? '');
+  const [edad, setEdad] = useState(params.edad?.toString() ?? '');
+  const [guardando, setGuardando] = useState(false);
 
   const mostrarMensaje = (titulo, mensaje) => {
     if (Platform.OS === 'web') {
@@ -20,7 +24,7 @@ export default function App() {
     Alert.alert(titulo, mensaje);
   };
 
-  const guardarUsuario = async () => {
+  const actualizarUsuario = async () => {
     const nombreLimpio = nombre.trim();
     const edadNumero = Number.parseInt(edad, 10);
 
@@ -35,11 +39,14 @@ export default function App() {
     }
 
     try {
-      setCargando(true);
+      setGuardando(true);
 
-      const respuesta = await fetch(`${API_BASE_URL}/v1/usuarios/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const respuesta = await fetch(`${API_BASE_URL}/v1/usuarios/${params.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: AUTH_HEADER,
+        },
         body: JSON.stringify({
           nombre: nombreLimpio,
           edad: edadNumero,
@@ -47,29 +54,30 @@ export default function App() {
       });
 
       if (!respuesta.ok) {
-        throw new Error('No se pudo guardar el usuario.');
+        throw new Error('No se pudo actualizar el usuario.');
       }
 
-      await respuesta.json();
-      mostrarMensaje('Exito', 'Se guardo el usuario correctamente.');
-      setNombre('');
-      setEdad('');
+      mostrarMensaje('Actualizado', 'Usuario actualizado correctamente.');
+      router.replace({
+        pathname: '/usuarios/[id]',
+        params: {
+          id: params.id,
+          nombre: nombreLimpio,
+          edad: edadNumero,
+        },
+      });
     } catch (error) {
       console.log('Error API:', error);
-      mostrarMensaje('Error', 'No se pudo conectar guardar.');
+      mostrarMensaje('Error', 'No se pudo actualizar el usuario.');
     } finally {
-      setCargando(false);
+      setGuardando(false);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.card}>
-
-        <Text style={styles.titulo}>
-          Registro de Usuarios
-        </Text>
+        <Text style={styles.titulo}>Actualizar Usuario</Text>
 
         <TextInput
           style={styles.input}
@@ -87,44 +95,36 @@ export default function App() {
         />
 
         <Pressable
-          disabled={cargando}
-          style={[styles.boton, cargando && styles.botonDeshabilitado]}
-          onPress={guardarUsuario}
+          disabled={guardando}
+          style={[styles.boton, guardando && styles.botonDeshabilitado]}
+          onPress={actualizarUsuario}
         >
           <Text style={styles.textoBoton}>
-            {cargando ? 'Guardando...' : 'Agregar Usuario'}
+            {guardando ? 'Actualizando...' : 'Actualizar Usuario'}
           </Text>
         </Pressable>
-
       </View>
-
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-    
   container: {
     flex: 1,
     backgroundColor: '#F5F7FA',
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
 
   card: {
-    width: '100%',
     backgroundColor: '#FFFFFF',
-    padding: 25,
     borderRadius: 15,
-    elevation: 5, 
+    padding: 25,
+    elevation: 5,
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
+    shadowOffset: { width: 0, height: 3 },
   },
 
   titulo: {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
 
   boton: {
-    backgroundColor: '#29bb0c',
+    backgroundColor: '#2563EB',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
 
   botonDeshabilitado: {
-    backgroundColor: '#7cbf70',
+    backgroundColor: '#7FA4E8',
   },
 
   textoBoton: {
